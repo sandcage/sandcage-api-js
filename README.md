@@ -6,7 +6,6 @@ sandcage-api-js is a JavaScript library for interfacing with SandCage's API. The
 ### Table of Contents
 * [Requirements](https://github.com/sandcage/sandcage-api-php/blob/master/README.md#requirements)
 * [Usage](https://github.com/sandcage/sandcage-api-php/blob/master/README.md#usage)
-* [Installation](https://github.com/sandcage/sandcage-api-php/blob/master/README.md#installation)
 * [Examples](https://github.com/sandcage/sandcage-api-php/tree/master/examples)
 * [Contributing](https://github.com/sandcage/sandcage-api-php/blob/master/README.md#contribute)
 * [Contact Us](https://www.sandcage.com/contact)
