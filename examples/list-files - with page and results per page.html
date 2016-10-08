@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<script src="../sandcage.js"></script>
+</head>
+<body>
+	If you have opened this page in a browser, open the console and reload the page for the output.<br/>
+	For the documentation of the <b>List Files</b> service, click <a href="https://www.sandcage.com/docs/0.2/list_files" target="_blank">Here</a>
+	<script>
+		var sandcage = SandCage('[YOUR SANDCAGE API KEY]');
+		var payload = {
+			'page': 1,
+			'results_per_page': 10
+		};
+		sandcage.SandCage.listFiles(payload, function(resp) {
+			console.log(resp);
+		})
+	</script>
+</body>
+</html>

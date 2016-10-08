@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<script src="../sandcage.js"></script>
+</head>
+<body>
+	If you have opened this page in a browser, open the console and reload the page for the output.<br/>
+	For the documentation of the <b>Schedule Tasks</b> service, click <a href="https://www.sandcage.com/docs/0.2/schedule_tasks" target="_blank">Here</a>
+	<script>
+		var sandcage = SandCage('[YOUR SANDCAGE API KEY]');
+		var payload = {
+			'jobs': [
+				{
+					'url': 'http://cdn.sandcage.com/p/a/img/logo.jpg',
+					'tasks': [
+						{
+							'actions': 'save'
+						},
+						{
+							'actions': 'resize',
+							'filename': 'hello_world.jpg',
+							'width': 200
+						},
+						{
+							'actions': 'crop',
+							'coords': '10,10,50,50'
+						},
+						{
+							'reference_id': '123456789',
+							'actions': 'rotate',
+							'degrees': 90
+						},
+						{
+							'actions': 'cover',
+							'width': 60,
+							'height': 60,
+							'cover': 'middle,center'
+						}
+					]
+				},
+				{
+					'url': 'http://cdn.sandcage.com/p/a/img/header_404.png',
+					'tasks': [
+						{
+							'actions': 'resize',
+							'height': 30
+						}
+					]
+				}
+			]
+		};
+		var callback_url = '';
+		sandcage.SandCage.scheduleFiles(payload, callback_url, function(resp) {
+			console.log(resp);
+		})
+	</script>
+</body>
+</html>

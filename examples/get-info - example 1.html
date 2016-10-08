@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<script src="../sandcage.js"></script>
+</head>
+<body>
+	If you have opened this page in a browser, open the console and reload the page for the output.<br/>
+	For the documentation of the <b>Get Info</b> service, click <a href="https://www.sandcage.com/docs/0.2/get_info" target="_blank">Here</a>
+	<script>
+		var sandcage = SandCage('[YOUR SANDCAGE API KEY]');
+		var payload = {
+			'request_id': '[request_id]'
+		};
+		sandcage.SandCage.getInfo(payload, function(resp) {
+			console.log(resp);
+		})
+	</script>
+</body>
+</html>

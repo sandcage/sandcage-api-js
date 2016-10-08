@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<script src="../sandcage.js"></script>
+</head>
+<body>
+	If you have opened this page in a browser, open the console and reload the page for the output.<br/>
+	For the documentation of the <b>Destroy Files</b> service, click <a href="https://www.sandcage.com/docs/0.2/destroy_files" target="_blank">Here</a>
+	<script>
+		var sandcage = SandCage('[YOUR SANDCAGE API KEY]');
+		var payload = {
+			'files': [
+				{'reference_id': '[reference_id]'},
+				{'file_token': '[file_token]'}
+			]
+		};
+		var callback_url = '';
+		sandcage.SandCage.destroyFiles(payload, callback_url, function(resp) {
+			console.log(resp);
+		})
+	</script>
+</body>
+</html>
