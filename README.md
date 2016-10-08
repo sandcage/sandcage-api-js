@@ -20,7 +20,7 @@ sandcage-api-js is a JavaScript library for interfacing with SandCage's API. The
 <a name="usage" />
 ##Usage
 
-```php
+```javascript
 var sandcage = SandCage('[YOUR SANDCAGE API KEY]');
 sandcage.SandCage.listFiles({}, function(resp) {
 	console.log(resp);
