@@ -62,7 +62,7 @@ SandCage = (function() {
         res = {
           status: 'error',
           name: 'GenericError',
-          message: 'An error occured.'
+          message: 'An error occurred.'
         };
       }
       if (req.status !== 200) {
