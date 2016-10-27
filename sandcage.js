@@ -70,16 +70,10 @@ SandCage = (function() {
           message: 'An error occurred.'
         };
       }
-      if (req.status !== 200) {
-        return console.log('ERROR: ', {
-          name: res.name,
-          message: res.message,
-          error: res
-        });
+      if (onresult) {
+        return onresult(res);
       } else {
-        if (onresult) {
-          return onresult(res);
-        }
+        return false;
       }
     };
     return req.send(payload);
@@ -113,16 +107,17 @@ SandCage = (function() {
   	The "get-info" service
   	@param {Object} params the hash of the parameters to pass to the request
   	@option params {String} name the immutable name of an existing template
+  	@param {Function} onresult an optional callback to execute when the API call is made
    */
 
-  SandCage.getInfo = function(params, onsuccess) {
+  SandCage.getInfo = function(params, onresult) {
     if ((params == null) || params === {}) {
       return false;
     }
-    if (onsuccess == null) {
+    if (onresult == null) {
       return false;
     }
-    return this.call('get-info', params, '', onsuccess);
+    return this.call('get-info', params, '', onresult);
   };
 
 
@@ -130,16 +125,17 @@ SandCage = (function() {
   	The "list-files" service
   	@param {Object} params the hash of the parameters to pass to the request
   	@option params {String} name the immutable name of an existing template
+  	@param {Function} onresult an optional callback to execute when the API call is made
    */
 
-  SandCage.listFiles = function(params, onsuccess) {
+  SandCage.listFiles = function(params, onresult) {
     if ((params == null) || params === {}) {
       return false;
     }
-    if (onsuccess == null) {
+    if (onresult == null) {
       return false;
     }
-    return this.call('list-files', params, '', onsuccess);
+    return this.call('list-files', params, '', onresult);
   };
 
 
@@ -148,17 +144,17 @@ SandCage = (function() {
   	@param {Object} params the hash of the parameters to pass to the request
   	@option params {String} name the immutable name of an existing template
   	@param {String} callback_endpoint an optional callback endpoint, to which a request will be sent whenever there is an update for any of the tasks included in this request. See https://www.sandcage.com/docs/0.2/schedule_tasks#callbacks for an example
-  	@param {Function} onsuccess an optional callback to execute when the API call is successfully made
+  	@param {Function} onresult an optional callback to execute when the API call is made
    */
 
-  SandCage.scheduleFiles = function(params, callback_endpoint, onsuccess) {
+  SandCage.scheduleFiles = function(params, callback_endpoint, onresult) {
     if (callback_endpoint == null) {
       callback_endpoint = '';
     }
     if ((params == null) || params === {}) {
       return false;
     }
-    return this.call('schedule-tasks', params, callback_endpoint, onsuccess);
+    return this.call('schedule-tasks', params, callback_endpoint, onresult);
   };
 
 
@@ -167,17 +163,17 @@ SandCage = (function() {
   	@param {Object} params the hash of the parameters to pass to the request
   	@option params {String} name the immutable name of an existing template
   	@param {String} callback_endpoint an optional callback endpoint, to which a request will be sent whenever there is an update for any of the tasks included in this request. See https://www.sandcage.com/docs/0.2/destroy_files#callbacks for an example
-  	@param {Function} onsuccess an optional callback to execute when the API call is successfully made
+  	@param {Function} onresult an optional callback to execute when the API call is made
    */
 
-  SandCage.destroyFiles = function(params, callback_endpoint, onsuccess) {
+  SandCage.destroyFiles = function(params, callback_endpoint, onresult) {
     if (callback_endpoint == null) {
       callback_endpoint = '';
     }
     if ((params == null) || params === {}) {
       return false;
     }
-    return this.call('destroy-files', params, callback_endpoint, onsuccess);
+    return this.call('destroy-files', params, callback_endpoint, onresult);
   };
 
   return SandCage;

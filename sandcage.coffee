@@ -32,10 +32,10 @@ class SandCage
 			catch e
 				res = {status: 'error', name: 'GenericError', message: e}
 			res ?= {status: 'error', name: 'GenericError', message: 'An error occurred.'}
-			if req.status isnt 200
-				console.log 'ERROR: ', {name: res.name, message: res.message, error: res}
+			if onresult
+				onresult(res)
 			else
-				if onresult then onresult(res)
+				return false
 
 		req.send(payload)
 		
@@ -62,41 +62,43 @@ class SandCage
 	The "get-info" service
 	@param {Object} params the hash of the parameters to pass to the request
 	@option params {String} name the immutable name of an existing template
+	@param {Function} onresult an optional callback to execute when the API call is made
 	###
-	@getInfo: (params, onsuccess) ->
+	@getInfo: (params, onresult) ->
 		if not params? or params is {} then return false
-		if not onsuccess? then return false
-		@call('get-info', params, '', onsuccess)
+		if not onresult? then return false
+		@call('get-info', params, '', onresult)
 
 	###
 	The "list-files" service
 	@param {Object} params the hash of the parameters to pass to the request
 	@option params {String} name the immutable name of an existing template
+	@param {Function} onresult an optional callback to execute when the API call is made
 	###
-	@listFiles: (params, onsuccess) ->
+	@listFiles: (params, onresult) ->
 		if not params? or params is {} then return false
-		if not onsuccess? then return false
-		@call('list-files', params, '', onsuccess)
+		if not onresult? then return false
+		@call('list-files', params, '', onresult)
 
 	###
 	The "schedule-tasks" service
 	@param {Object} params the hash of the parameters to pass to the request
 	@option params {String} name the immutable name of an existing template
 	@param {String} callback_endpoint an optional callback endpoint, to which a request will be sent whenever there is an update for any of the tasks included in this request. See https://www.sandcage.com/docs/0.2/schedule_tasks#callbacks for an example
-	@param {Function} onsuccess an optional callback to execute when the API call is successfully made
+	@param {Function} onresult an optional callback to execute when the API call is made
 	###
-	@scheduleFiles: (params, callback_endpoint='', onsuccess) ->
+	@scheduleFiles: (params, callback_endpoint='', onresult) ->
 		if not params? or params is {} then return false
-		@call('schedule-tasks', params, callback_endpoint, onsuccess)
+		@call('schedule-tasks', params, callback_endpoint, onresult)
 
 	###
 	The "destroy-files" service
 	@param {Object} params the hash of the parameters to pass to the request
 	@option params {String} name the immutable name of an existing template
 	@param {String} callback_endpoint an optional callback endpoint, to which a request will be sent whenever there is an update for any of the tasks included in this request. See https://www.sandcage.com/docs/0.2/destroy_files#callbacks for an example
-	@param {Function} onsuccess an optional callback to execute when the API call is successfully made
+	@param {Function} onresult an optional callback to execute when the API call is made
 	###
-	@destroyFiles: (params, callback_endpoint='', onsuccess) ->
+	@destroyFiles: (params, callback_endpoint='', onresult) ->
 		if not params? or params is {} then return false
-		@call('destroy-files', params, callback_endpoint, onsuccess)
+		@call('destroy-files', params, callback_endpoint, onresult)
 
