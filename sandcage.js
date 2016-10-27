@@ -12,12 +12,11 @@ SandCage = (function() {
   function SandCage(apikey) {
     this.apikey = apikey;
     if (!this.apikey) {
-      SandCage.onerror({
+      return {
         status: 'error',
         name: 'MissingKey',
         message: 'Provide your SandCage API Key.'
-      });
-      return false;
+      };
     }
     SANDCAGE_API = this;
     if (typeof JSON === "undefined" || JSON === null) {
@@ -27,7 +26,7 @@ SandCage = (function() {
   }
 
   SandCage.call = function(service_endpoint, params, callback_endpoint, onresult) {
-    var key, payload, req;
+    var key, payload;
     if (callback_endpoint == null) {
       callback_endpoint = '';
     }
@@ -41,26 +40,31 @@ SandCage = (function() {
       payload[key] = params[key];
     }
     payload = JSON.stringify(payload);
+    return this.ajaxCall(service_endpoint, payload, callback_endpoint, onresult);
+  };
+
+  SandCage.ajaxCall = function(service_endpoint, payload, callback_endpoint, onresult) {
 
     /*
     		global: XMLHttpRequest
      */
+    var req;
     req = new XMLHttpRequest();
     req.open('POST', "" + ENDPOINT_BASE + service_endpoint);
     req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     req.onreadystatechange = function() {
-      var e, res;
+      var res, _error;
       if (req.readyState !== 4) {
-        return;
+        return false;
       }
       try {
         res = JSON.parse(req.responseText);
       } catch (_error) {
-        e = _error;
+        _error = _error;
         res = {
           status: 'error',
           name: 'GenericError',
-          message: e
+          message: _error
         };
       }
       if (res == null) {
@@ -106,7 +110,6 @@ SandCage = (function() {
   /*
   	The "get-info" service
   	@param {Object} params the hash of the parameters to pass to the request
-  	@option params {String} name the immutable name of an existing template
   	@param {Function} onresult an optional callback to execute when the API call is made
    */
 
@@ -124,7 +127,6 @@ SandCage = (function() {
   /*
   	The "list-files" service
   	@param {Object} params the hash of the parameters to pass to the request
-  	@option params {String} name the immutable name of an existing template
   	@param {Function} onresult an optional callback to execute when the API call is made
    */
 
@@ -142,7 +144,6 @@ SandCage = (function() {
   /*
   	The "schedule-tasks" service
   	@param {Object} params the hash of the parameters to pass to the request
-  	@option params {String} name the immutable name of an existing template
   	@param {String} callback_endpoint an optional callback endpoint, to which a request will be sent whenever there is an update for any of the tasks included in this request. See https://www.sandcage.com/docs/0.2/schedule_tasks#callbacks for an example
   	@param {Function} onresult an optional callback to execute when the API call is made
    */
@@ -161,7 +162,6 @@ SandCage = (function() {
   /*
   	The "destroy-files" service
   	@param {Object} params the hash of the parameters to pass to the request
-  	@option params {String} name the immutable name of an existing template
   	@param {String} callback_endpoint an optional callback endpoint, to which a request will be sent whenever there is an update for any of the tasks included in this request. See https://www.sandcage.com/docs/0.2/destroy_files#callbacks for an example
   	@param {Function} onresult an optional callback to execute when the API call is made
    */

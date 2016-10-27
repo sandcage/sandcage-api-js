@@ -6,8 +6,7 @@ class SandCage
 
 	constructor: (@apikey) ->
 		if not @apikey
-			SandCage.onerror({status: 'error', name: 'MissingKey', message: 'Provide your SandCage API Key.'})
-			return false
+			return {status: 'error', name: 'MissingKey', message: 'Provide your SandCage API Key.'}
 		SANDCAGE_API = @
 
 		if not JSON? then loadScript('json2.min.js')
@@ -19,6 +18,9 @@ class SandCage
 		for key of params
 			payload[key] = params[key]
 		payload = JSON.stringify(payload)
+		@ajaxCall(service_endpoint, payload, callback_endpoint, onresult)
+
+	@ajaxCall: (service_endpoint, payload, callback_endpoint, onresult) ->
 		###
 		global: XMLHttpRequest 
 		###
@@ -26,11 +28,11 @@ class SandCage
 		req.open('POST', "#{ENDPOINT_BASE}#{service_endpoint}")
 		req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
 		req.onreadystatechange = () ->
-			if req.readyState isnt 4 then return
+			if req.readyState isnt 4 then return false
 			try
 				res = JSON.parse(req.responseText)
-			catch e
-				res = {status: 'error', name: 'GenericError', message: e}
+			catch _error
+				res = {status: 'error', name: 'GenericError', message: _error}
 			res ?= {status: 'error', name: 'GenericError', message: 'An error occurred.'}
 			if onresult
 				onresult(res)
@@ -61,7 +63,6 @@ class SandCage
 	###
 	The "get-info" service
 	@param {Object} params the hash of the parameters to pass to the request
-	@option params {String} name the immutable name of an existing template
 	@param {Function} onresult an optional callback to execute when the API call is made
 	###
 	@getInfo: (params, onresult) ->
@@ -72,7 +73,6 @@ class SandCage
 	###
 	The "list-files" service
 	@param {Object} params the hash of the parameters to pass to the request
-	@option params {String} name the immutable name of an existing template
 	@param {Function} onresult an optional callback to execute when the API call is made
 	###
 	@listFiles: (params, onresult) ->
@@ -83,7 +83,6 @@ class SandCage
 	###
 	The "schedule-tasks" service
 	@param {Object} params the hash of the parameters to pass to the request
-	@option params {String} name the immutable name of an existing template
 	@param {String} callback_endpoint an optional callback endpoint, to which a request will be sent whenever there is an update for any of the tasks included in this request. See https://www.sandcage.com/docs/0.2/schedule_tasks#callbacks for an example
 	@param {Function} onresult an optional callback to execute when the API call is made
 	###
@@ -94,7 +93,6 @@ class SandCage
 	###
 	The "destroy-files" service
 	@param {Object} params the hash of the parameters to pass to the request
-	@option params {String} name the immutable name of an existing template
 	@param {String} callback_endpoint an optional callback endpoint, to which a request will be sent whenever there is an update for any of the tasks included in this request. See https://www.sandcage.com/docs/0.2/destroy_files#callbacks for an example
 	@param {Function} onresult an optional callback to execute when the API call is made
 	###
