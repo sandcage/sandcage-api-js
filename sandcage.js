@@ -1,14 +1,15 @@
 var SandCage;
 
 SandCage = (function() {
-  var API_VERSION, ENDPOINT_BASE, loadScript;
+  var API_VERSION, ENDPOINT_BASE, SANDCAGE_API, loadScript;
+
+  SANDCAGE_API = {};
 
   API_VERSION = "0.2";
 
   ENDPOINT_BASE = "https://api.sandcage.com/" + API_VERSION + "/";
 
   function SandCage(apikey) {
-    var self;
     this.apikey = apikey;
     if (!this.apikey) {
       SandCage.onerror({
@@ -18,7 +19,7 @@ SandCage = (function() {
       });
       return false;
     }
-    self = this;
+    SANDCAGE_API = this;
     if (typeof JSON === "undefined" || JSON === null) {
       loadScript('json2.min.js');
     }
@@ -31,7 +32,7 @@ SandCage = (function() {
       callback_endpoint = '';
     }
     payload = {
-      key: self.apikey
+      key: SANDCAGE_API.apikey
     };
     if (callback_endpoint !== '') {
       payload.callback_url = callback_endpoint;
@@ -66,7 +67,11 @@ SandCage = (function() {
         };
       }
       if (req.status !== 200) {
-        return SandCage.onerror(res);
+        return console.log('ERROR: ', {
+          name: res.name,
+          message: res.message,
+          error: res
+        });
       } else {
         if (onresult) {
           return onresult(res);
@@ -76,33 +81,20 @@ SandCage = (function() {
     return req.send(payload);
   };
 
-  SandCage.onerror = function(err) {
-    return console.log('ERROR: ', {
-      name: err.name,
-      message: err.message,
-      error: err
-    });
-  };
-
   loadScript = function(url) {
     var ajax;
-    ajax = new XMLHttpRequest;
+    ajax = new XMLHttpRequest();
     ajax.open('GET', url, false);
     ajax.onreadystatechange = function() {
       var script, scriptNode;
       script = ajax.response || ajax.responseText;
       if (ajax.readyState === 4) {
-        switch (ajax.status) {
-          case 200:
-            scriptNode = document.createElement('script');
-            scriptNode.setAttribute('type', 'text/javascript');
-            scriptNode.setAttribute('charset', 'UTF-8');
-            scriptNode.setAttribute('src', url);
-            document.head.appendChild(scriptNode);
-            console.log('library loaded: ', url);
-            break;
-          default:
-            console.log('ERROR: library not loaded: ', url);
+        if (ajax.status === 200) {
+          scriptNode = document.createElement('script');
+          scriptNode.setAttribute('type', 'text/javascript');
+          scriptNode.setAttribute('charset', 'UTF-8');
+          scriptNode.setAttribute('src', url);
+          document.head.appendChild(scriptNode);
         }
       }
     };

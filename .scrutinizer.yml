@@ -1,0 +1,5 @@
+filter:
+  excluded_paths: ["examples/*", "json2*", "*.min.js", "*.coffee"]
+checks:
+  javascript: true
+build: true

@@ -1,6 +1,6 @@
 
 class SandCage
-
+	SANDCAGE_API={}
 	API_VERSION = "0.2"
 	ENDPOINT_BASE = "https://api.sandcage.com/#{API_VERSION}/"
 
@@ -8,13 +8,13 @@ class SandCage
 		if not @apikey
 			SandCage.onerror({status: 'error', name: 'MissingKey', message: 'Provide your SandCage API Key.'})
 			return false
-		self = @
+		SANDCAGE_API = @
 
 		if not JSON? then loadScript('json2.min.js')
 		return @
 
 	@call: (service_endpoint, params, callback_endpoint='', onresult) ->
-		payload = key: self.apikey
+		payload = key: SANDCAGE_API.apikey
 		if callback_endpoint isnt '' then payload.callback_url = callback_endpoint
 		for key of params
 			payload[key] = params[key]
@@ -28,34 +28,27 @@ class SandCage
 				res = JSON.parse(req.responseText)
 			catch e
 				res = {status: 'error', name: 'GenericError', message: e}
-			res ?= {status: 'error', name: 'GenericError', message: 'An error occured.'}
+			res ?= {status: 'error', name: 'GenericError', message: 'An error occurred.'}
 			if req.status isnt 200
-				SandCage.onerror(res)
+				console.log 'ERROR: ', {name: res.name, message: res.message, error: res}
 			else
 				if onresult then onresult(res)
 
 		req.send(payload)
-	
-	@onerror: (err) ->
-		console.log 'ERROR: ', {name: err.name, message: err.message, error: err}
 		
 	loadScript = (url) ->
-		ajax = new XMLHttpRequest
+		ajax = new XMLHttpRequest()
 		ajax.open 'GET', url, false
 
 		ajax.onreadystatechange = ->
 			script = ajax.response or ajax.responseText
-			if ajax.readyState == 4
-				switch ajax.status
-					when 200
-						scriptNode = document.createElement('script')
-						scriptNode.setAttribute 'type', 'text/javascript'
-						scriptNode.setAttribute 'charset', 'UTF-8'
-						scriptNode.setAttribute 'src', url
-						document.head.appendChild scriptNode
-						console.log 'library loaded: ', url
-					else
-						console.log 'ERROR: library not loaded: ', url
+			if ajax.readyState is 4
+				if ajax.status is 200
+					scriptNode = document.createElement('script')
+					scriptNode.setAttribute 'type', 'text/javascript'
+					scriptNode.setAttribute 'charset', 'UTF-8'
+					scriptNode.setAttribute 'src', url
+					document.head.appendChild scriptNode
 			return
 
 		ajax.send null
