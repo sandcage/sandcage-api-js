@@ -41,6 +41,10 @@ SandCage = (function() {
       payload[key] = params[key];
     }
     payload = JSON.stringify(payload);
+
+    /*
+    		global: XMLHttpRequest
+     */
     req = new XMLHttpRequest();
     req.open('POST', "" + ENDPOINT_BASE + service_endpoint);
     req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
@@ -82,12 +86,15 @@ SandCage = (function() {
   };
 
   loadScript = function(url) {
+
+    /*
+    		global: XMLHttpRequest
+     */
     var ajax;
     ajax = new XMLHttpRequest();
     ajax.open('GET', url, false);
     ajax.onreadystatechange = function() {
-      var script, scriptNode;
-      script = ajax.response || ajax.responseText;
+      var scriptNode;
       if (ajax.readyState === 4) {
         if (ajax.status === 200) {
           scriptNode = document.createElement('script');

@@ -19,6 +19,9 @@ class SandCage
 		for key of params
 			payload[key] = params[key]
 		payload = JSON.stringify(payload)
+		###
+		global: XMLHttpRequest 
+		###
 		req = new XMLHttpRequest()
 		req.open('POST', "#{ENDPOINT_BASE}#{service_endpoint}")
 		req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
@@ -37,11 +40,12 @@ class SandCage
 		req.send(payload)
 		
 	loadScript = (url) ->
+		###
+		global: XMLHttpRequest 
+		###
 		ajax = new XMLHttpRequest()
 		ajax.open 'GET', url, false
-
 		ajax.onreadystatechange = ->
-			script = ajax.response or ajax.responseText
 			if ajax.readyState is 4
 				if ajax.status is 200
 					scriptNode = document.createElement('script')
