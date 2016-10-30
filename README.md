@@ -14,14 +14,14 @@ sandcage-api-js is a JavaScript library for interfacing with SandCage's API. The
 * [Contact Us](https://www.sandcage.com/contact)
 
 
-<a name="requirements" />
-##Requirements
+<a name="requirements" /></a>
+## Requirements
 
 * A SandCage account, in order to get your SandCage API Key. Once logged into SandCage get your API Key at https://www.sandcage.com/panel/api_key
 
 
-<a name="usage" />
-##Usage
+<a name="usage" /></a>
+## Usage
 
 ```javascript
 var sandcage = SandCage('[YOUR SANDCAGE API KEY]');
@@ -31,8 +31,8 @@ sandcage.SandCage.listFiles({}, function(resp) {
 ```
 
 
-<a name="contribute" />
-##Contributing
+<a name="contribute" /></a>
+## Contributing
 
 We are open to suggestions and code revisions, however there are some rules and limitations that you might want to consider first.
 
