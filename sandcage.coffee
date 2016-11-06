@@ -9,7 +9,7 @@ class SandCage
 			return {status: 'error', name: 'MissingKey', message: 'Provide your SandCage API Key.'}
 		SANDCAGE_API = @
 
-		if not JSON? then loadScript('json2.min.js')
+		if not JSON? then @loadScript('json2.min.js')
 		return @
 
 	@call: (service_endpoint, params, callback_endpoint, onresult) ->
@@ -23,7 +23,7 @@ class SandCage
 		###
 global: XMLHttpRequest 
 		###
-		if callback_endpoint? and callback_endpoint isnt '' then payload.callback_url = callback_endpoint
+		if not callback_endpoint then payload.callback_url = callback_endpoint
 		payload = JSON.stringify(payload)
 		req = new XMLHttpRequest()
 		req.open('POST', "#{ENDPOINT_BASE}#{service_endpoint}", false)
@@ -39,7 +39,7 @@ global: XMLHttpRequest
 
 		req.send(payload)
 		
-	loadScript = (url) ->
+	@loadScript = (url) ->
 		###
 global: XMLHttpRequest 
 		###

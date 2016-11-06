@@ -36,7 +36,7 @@ SandCage = (function() {
     global: XMLHttpRequest
      */
     var req;
-    if ((callback_endpoint != null) && callback_endpoint !== '') {
+    if (!callback_endpoint) {
       payload.callback_url = callback_endpoint;
     }
     payload = JSON.stringify(payload);
