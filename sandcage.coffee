@@ -13,6 +13,7 @@ class SandCage
 		return @
 
 	@call: (service_endpoint, params, callback_endpoint='', onresult) ->
+		if not params? or params is {} then return false
 		payload = key: SANDCAGE_API.apikey
 		if callback_endpoint isnt '' then payload.callback_url = callback_endpoint
 		for key of params
@@ -58,42 +59,38 @@ global: XMLHttpRequest
 		return
 
 	###
-	The "get-info" service
-	@param {Object} params the hash of the parameters to pass to the request
-	@param {Function} onresult an optional callback to execute when the API call is made
+The "get-info" service
+@param {Object} params the hash of the parameters to pass to the request
+@param {Function} onresult an optional callback to execute when the API call is made
 	###
 	@getInfo: (params, onresult) ->
-		if not params? or params is {} then return false
 		if not onresult? then return false
 		@call('get-info', params, '', onresult)
 
 	###
-	The "list-files" service
-	@param {Object} params the hash of the parameters to pass to the request
-	@param {Function} onresult an optional callback to execute when the API call is made
+The "list-files" service
+@param {Object} params the hash of the parameters to pass to the request
+@param {Function} onresult an optional callback to execute when the API call is made
 	###
 	@listFiles: (params, onresult) ->
-		if not params? or params is {} then return false
 		if not onresult? then return false
 		@call('list-files', params, '', onresult)
 
 	###
-	The "schedule-tasks" service
-	@param {Object} params the hash of the parameters to pass to the request
-	@param {String} callback_endpoint an optional callback endpoint, to which a request will be sent whenever there is an update for any of the tasks included in this request. See https://www.sandcage.com/docs/0.2/schedule_tasks#callbacks for an example
-	@param {Function} onresult an optional callback to execute when the API call is made
+The "schedule-tasks" service
+@param {Object} params the hash of the parameters to pass to the request
+@param {String} callback_endpoint an optional callback endpoint, to which a request will be sent whenever there is an update for any of the tasks included in this request. See https://www.sandcage.com/docs/0.2/schedule_tasks#callbacks for an example
+@param {Function} onresult an optional callback to execute when the API call is made
 	###
-	@scheduleFiles: (params, callback_endpoint='', onresult) ->
-		if not params? or params is {} then return false
+	@scheduleFiles: (params, callback_endpoint, onresult) ->
 		@call('schedule-tasks', params, callback_endpoint, onresult)
 
 	###
-	The "destroy-files" service
-	@param {Object} params the hash of the parameters to pass to the request
-	@param {String} callback_endpoint an optional callback endpoint, to which a request will be sent whenever there is an update for any of the tasks included in this request. See https://www.sandcage.com/docs/0.2/destroy_files#callbacks for an example
-	@param {Function} onresult an optional callback to execute when the API call is made
+The "destroy-files" service
+@param {Object} params the hash of the parameters to pass to the request
+@param {String} callback_endpoint an optional callback endpoint, to which a request will be sent whenever there is an update for any of the tasks included in this request. See https://www.sandcage.com/docs/0.2/destroy_files#callbacks for an example
+@param {Function} onresult an optional callback to execute when the API call is made
 	###
-	@destroyFiles: (params, callback_endpoint='', onresult) ->
-		if not params? or params is {} then return false
+	@destroyFiles: (params, callback_endpoint, onresult) ->
 		@call('destroy-files', params, callback_endpoint, onresult)
 
