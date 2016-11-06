@@ -27,16 +27,13 @@ SandCage = (function() {
 
   SandCage.call = function(service_endpoint, params, callback_endpoint, onresult) {
     var key, payload;
-    if (callback_endpoint == null) {
-      callback_endpoint = '';
-    }
     if ((params == null) || params === {}) {
       return false;
     }
     payload = {
       key: SANDCAGE_API.apikey
     };
-    if (callback_endpoint !== '') {
+    if ((callback_endpoint != null) && callback_endpoint !== '') {
       payload.callback_url = callback_endpoint;
     }
     for (key in params) {
