@@ -1,26 +1,18 @@
 var SandCage;
 
 SandCage = (function() {
-  var API_VERSION, ENDPOINT_BASE, SANDCAGE_API, loadScript;
-
-  SANDCAGE_API = {};
-
-  API_VERSION = "0.2";
-
-  ENDPOINT_BASE = "https://api.sandcage.com/" + API_VERSION + "/";
+  var SANDCAGE_API = {};
+  var API_VERSION = "0.2";
+  var ENDPOINT_BASE = "https://api.sandcage.com/" + API_VERSION + "/";
 
   function SandCage(apikey) {
     this.apikey = apikey;
     if (!this.apikey) {
-      return {
-        status: 'error',
-        name: 'MissingKey',
-        message: 'Provide your SandCage API Key.'
-      };
+      return {status: 'error', name: 'MissingKey', message: 'Provide your SandCage API Key.'};
     }
     SANDCAGE_API = this;
     if (typeof JSON === "undefined" || JSON === null) {
-      loadScript('json2.min.js');
+      this.loadScript('json2.min.js');
     }
     return this;
   }
@@ -40,7 +32,6 @@ SandCage = (function() {
   };
 
   SandCage.ajaxCall = function(service_endpoint, payload, callback_endpoint, onresult) {
-
     /*
     global: XMLHttpRequest
      */
@@ -59,11 +50,7 @@ SandCage = (function() {
       }
       res = JSON.parse(req.responseText);
       if (res == null) {
-        res = {
-          status: 'error',
-          name: 'GenericError',
-          message: 'An error occurred.'
-        };
+        res = {status: 'error', name: 'GenericError', message: 'An error occurred.'};
       }
       if (onresult) {
         return onresult(res);
@@ -74,8 +61,7 @@ SandCage = (function() {
     return req.send(payload);
   };
 
-  loadScript = function(url) {
-
+  SandCage.loadScript = function(url) {
     /*
     global: XMLHttpRequest
      */
@@ -97,13 +83,11 @@ SandCage = (function() {
     req.send(null);
   };
 
-
   /*
   The "get-info" service
   @param {Object} params the hash of the parameters to pass to the request
   @param {Function} onresult an optional callback to execute when the API call is made
    */
-
   SandCage.getInfo = function(params, onresult) {
     if (onresult == null) {
       return false;
@@ -111,13 +95,11 @@ SandCage = (function() {
     return this.call('get-info', params, '', onresult);
   };
 
-
   /*
   The "list-files" service
   @param {Object} params the hash of the parameters to pass to the request
   @param {Function} onresult an optional callback to execute when the API call is made
    */
-
   SandCage.listFiles = function(params, onresult) {
     if (onresult == null) {
       return false;
@@ -125,18 +107,15 @@ SandCage = (function() {
     return this.call('list-files', params, '', onresult);
   };
 
-
   /*
   The "schedule-tasks" service
   @param {Object} params the hash of the parameters to pass to the request
   @param {String} callback_endpoint an optional callback endpoint, to which a request will be sent whenever there is an update for any of the tasks included in this request. See https://www.sandcage.com/docs/0.2/schedule_tasks#callbacks for an example
   @param {Function} onresult an optional callback to execute when the API call is made
    */
-
   SandCage.scheduleFiles = function(params, callback_endpoint, onresult) {
     return this.call('schedule-tasks', params, callback_endpoint, onresult);
   };
-
 
   /*
   The "destroy-files" service
@@ -144,11 +123,9 @@ SandCage = (function() {
   @param {String} callback_endpoint an optional callback endpoint, to which a request will be sent whenever there is an update for any of the tasks included in this request. See https://www.sandcage.com/docs/0.2/destroy_files#callbacks for an example
   @param {Function} onresult an optional callback to execute when the API call is made
    */
-
   SandCage.destroyFiles = function(params, callback_endpoint, onresult) {
     return this.call('destroy-files', params, callback_endpoint, onresult);
   };
 
   return SandCage;
-
 })();
