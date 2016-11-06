@@ -15,16 +15,16 @@ class SandCage
 	@call: (service_endpoint, params, callback_endpoint, onresult) ->
 		if not params? or params is {} then return false
 		payload = key: SANDCAGE_API.apikey
-		if callback_endpoint? and callback_endpoint isnt '' then payload.callback_url = callback_endpoint
 		for key of params
 			payload[key] = params[key]
-		payload = JSON.stringify(payload)
 		@ajaxCall(service_endpoint, payload, callback_endpoint, onresult)
 
 	@ajaxCall: (service_endpoint, payload, callback_endpoint, onresult) ->
 		###
 global: XMLHttpRequest 
 		###
+		if callback_endpoint? and callback_endpoint isnt '' then payload.callback_url = callback_endpoint
+		payload = JSON.stringify(payload)
 		req = new XMLHttpRequest()
 		req.open('POST', "#{ENDPOINT_BASE}#{service_endpoint}", false)
 		req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')

@@ -33,13 +33,9 @@ SandCage = (function() {
     payload = {
       key: SANDCAGE_API.apikey
     };
-    if ((callback_endpoint != null) && callback_endpoint !== '') {
-      payload.callback_url = callback_endpoint;
-    }
     for (key in params) {
       payload[key] = params[key];
     }
-    payload = JSON.stringify(payload);
     return this.ajaxCall(service_endpoint, payload, callback_endpoint, onresult);
   };
 
@@ -49,6 +45,10 @@ SandCage = (function() {
     global: XMLHttpRequest
      */
     var req;
+    if ((callback_endpoint != null) && callback_endpoint !== '') {
+      payload.callback_url = callback_endpoint;
+    }
+    payload = JSON.stringify(payload);
     req = new XMLHttpRequest();
     req.open('POST', "" + ENDPOINT_BASE + service_endpoint, false);
     req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
