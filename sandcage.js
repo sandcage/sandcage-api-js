@@ -46,27 +46,18 @@ SandCage = (function() {
   SandCage.ajaxCall = function(service_endpoint, payload, callback_endpoint, onresult) {
 
     /*
-    		global: XMLHttpRequest
+    global: XMLHttpRequest
      */
     var req;
     req = new XMLHttpRequest();
-    req.open('POST', "" + ENDPOINT_BASE + service_endpoint);
+    req.open('POST', "" + ENDPOINT_BASE + service_endpoint, false);
     req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     req.onreadystatechange = function() {
-      var res, _error;
+      var res;
       if (req.readyState !== 4) {
         return false;
       }
-      try {
-        res = JSON.parse(req.responseText);
-      } catch (_error) {
-        _error = _error;
-        res = {
-          status: 'error',
-          name: 'GenericError',
-          message: _error
-        };
-      }
+      res = JSON.parse(req.responseText);
       if (res == null) {
         res = {
           status: 'error',
@@ -86,15 +77,15 @@ SandCage = (function() {
   loadScript = function(url) {
 
     /*
-    		global: XMLHttpRequest
+    global: XMLHttpRequest
      */
-    var ajax;
-    ajax = new XMLHttpRequest();
-    ajax.open('GET', url, false);
-    ajax.onreadystatechange = function() {
+    var req;
+    req = new XMLHttpRequest();
+    req.open('GET', url, false);
+    req.onreadystatechange = function() {
       var scriptNode;
-      if (ajax.readyState === 4) {
-        if (ajax.status === 200) {
+      if (req.readyState === 4) {
+        if (req.status === 200) {
           scriptNode = document.createElement('script');
           scriptNode.setAttribute('type', 'text/javascript');
           scriptNode.setAttribute('charset', 'UTF-8');
@@ -103,7 +94,7 @@ SandCage = (function() {
         }
       }
     };
-    ajax.send(null);
+    req.send(null);
   };
 
 

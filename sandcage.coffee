@@ -22,17 +22,14 @@ class SandCage
 
 	@ajaxCall: (service_endpoint, payload, callback_endpoint, onresult) ->
 		###
-		global: XMLHttpRequest 
+global: XMLHttpRequest 
 		###
 		req = new XMLHttpRequest()
-		req.open('POST', "#{ENDPOINT_BASE}#{service_endpoint}")
+		req.open('POST', "#{ENDPOINT_BASE}#{service_endpoint}", false)
 		req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
 		req.onreadystatechange = () ->
 			if req.readyState isnt 4 then return false
-			try
-				res = JSON.parse(req.responseText)
-			catch _error
-				res = {status: 'error', name: 'GenericError', message: _error}
+			res = JSON.parse(req.responseText)
 			res ?= {status: 'error', name: 'GenericError', message: 'An error occurred.'}
 			if onresult
 				onresult(res)
@@ -43,13 +40,13 @@ class SandCage
 		
 	loadScript = (url) ->
 		###
-		global: XMLHttpRequest 
+global: XMLHttpRequest 
 		###
-		ajax = new XMLHttpRequest()
-		ajax.open 'GET', url, false
-		ajax.onreadystatechange = ->
-			if ajax.readyState is 4
-				if ajax.status is 200
+		req = new XMLHttpRequest()
+		req.open 'GET', url, false
+		req.onreadystatechange = ->
+			if req.readyState is 4
+				if req.status is 200
 					scriptNode = document.createElement('script')
 					scriptNode.setAttribute 'type', 'text/javascript'
 					scriptNode.setAttribute 'charset', 'UTF-8'
@@ -57,7 +54,7 @@ class SandCage
 					document.head.appendChild scriptNode
 			return
 
-		ajax.send null
+		req.send null
 		return
 
 	###
